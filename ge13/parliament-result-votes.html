@@ -1,0 +1,195 @@
+<html>
+  <head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type"></meta>
+    <meta content="utf-8" http-equiv="encoding"></meta>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+    <script type="text/javascript">
+      // Aged >= 15 in 2007 - would be >= 21 in 2013, assumed alive/no addition
+      var MALAYSIAN_POPULATION = 19106500;
+
+      var prParties = ['PAS', 'PKR', 'DAP'];
+      var prName = 'PR';
+
+      google.load("visualization", "1", {packages:["corechart"]});
+      var data = $.ajax({
+        url: 'parliament.json',
+        mimeType: 'text/plain',
+        async: false
+      }).responseText;
+      var states = JSON.parse(data);
+
+      var totalRegisteredVoters = 0;
+      _.each(states, function(state) {
+        _.each(state.constituents, function(constituent) {
+          totalRegisteredVoters += constituent.stat.registeredVoterCount;
+        });
+      });
+      var unregisteredVoterCount = MALAYSIAN_POPULATION - totalRegisteredVoters;
+
+      $(document).ready(function() {
+        var showPrCheckBox = $("#showPr");
+        var showForfeittedVotesCheckBox = $("#showForfeittedVotes");
+        var showUnregisteredVoters = $("#showUnregisteredVoters");
+        var redrawChart = function() {
+          drawChart({
+            showAsPr: showPrCheckBox.is(":checked"),
+            forfeittedVotes: showForfeittedVotesCheckBox.val(),
+            showUnregisteredVoters: showUnregisteredVoters.is(":checked")
+          })
+        };
+
+        showPrCheckBox.click(redrawChart);
+        showForfeittedVotesCheckBox.click(redrawChart);
+        showUnregisteredVoters.click(redrawChart);
+
+        redrawChart();
+      });
+
+      function drawChart(options) {
+        var chartArea = $("#charts");
+        chartArea.empty();
+
+        var overallParty2VoteCount = {};
+        var overallForfeittedVoteCount = 0;
+        _.map(states, function(state) {
+          var stateName = state.name;
+          var party2VoteCount = {};
+          var forfeittedVoteCount = 0;
+
+          _.map(state.constituents, function(constituent) {
+            _.map(constituent.candidates, function(candidate) {
+              var party = candidate.party;
+              if (options.showAsPr && _.contains(prParties, party)) {
+                party = prName;
+              }
+              var voteCount = candidate.voteCount;
+
+              var currentVoteCount = party2VoteCount[party];
+              if (currentVoteCount === undefined) {
+                currentVoteCount = 0;
+              }
+              party2VoteCount[party] = currentVoteCount + voteCount;
+            });
+            var validVoteCount = constituent.stat.castedBallotCount - constituent.stat.rejectedBallotCount;
+            var constituentForfeittedVoteCount = constituent.stat.registeredVoterCount - validVoteCount;
+            forfeittedVoteCount += constituentForfeittedVoteCount;
+
+            if (options.forfeittedVotes === "showAsWinner") {
+              var winner = _.max(constituent.candidates, function(candidate) { return candidate.voteCount; });
+              var party = winner.party;
+
+              if (options.showAsPr && _.contains(prParties, party)) {
+                party = prName;
+              }
+              addCountTo(party2VoteCount, party, constituentForfeittedVoteCount);
+            }
+            if (options.forfeittedVotes === "showAsRunnerUp") {
+              var rankedCandidates = constituent.candidates.slice().sort(function(a, b) {
+                return b.voteCount - a.voteCount;
+              });
+              var runnerUp = rankedCandidates[1];
+              var party = runnerUp.party;
+
+              if (options.showAsPr && _.contains(prParties, party)) {
+                party = prName;
+              }
+              addCountTo(party2VoteCount, party, constituentForfeittedVoteCount);
+            }
+          });
+          overallForfeittedVoteCount += forfeittedVoteCount;
+
+          for (var party in party2VoteCount) {
+            var currentVoteCount = overallParty2VoteCount[party];
+            if (currentVoteCount === undefined) {
+              currentVoteCount = 0;
+            }
+            overallParty2VoteCount[party] = currentVoteCount + party2VoteCount[party];
+          }
+
+          var chartOptions = {
+            title: stateName,
+            pieSliceText: 'value'
+          };
+
+          var id = stateName;
+          chartArea.append("<div id='" + id + "' style='width: 900px; height: 500px;''></div>");
+
+          var chartData = [['Name', 'Votes']];
+          if (options.forfeittedVotes === "showAsBn") {
+            addCountTo(party2VoteCount, 'BN', forfeittedVoteCount);
+            addCountTo(overallParty2VoteCount, 'BN', forfeittedVoteCount);
+          } else if (options.forfeittedVotes === "showAsPr") {
+            addCountTo(party2VoteCount, 'PR', forfeittedVoteCount);
+            addCountTo(overallParty2VoteCount, 'PR', forfeittedVoteCount);
+          }
+          _.map(getSortedKeys(party2VoteCount), function(party) {
+            chartData.push([party, party2VoteCount[party]]);
+          });
+          if (options.forfeittedVotes === 'show') {
+            chartData.push(['Forfeitted Votes', forfeittedVoteCount]);
+          }
+          chartData = google.visualization.arrayToDataTable(chartData);
+
+          var chart = new google.visualization.PieChart(document.getElementById(id));
+          chart.draw(chartData, chartOptions);
+        });
+
+        var chartOptions = {
+          title: 'Malaysia',
+          pieSliceText: 'value'
+        };
+
+        var id = "Overall";
+        chartArea.prepend("<div id='" + id + "' style='width: 900px; height: 500px;''></div>");
+        var chartData = [['Name', 'Votes']];
+        _.map(getSortedKeys(overallParty2VoteCount), function(party) {
+          chartData.push([party, overallParty2VoteCount[party]]);
+        });
+        if (options.forfeittedVotes === 'show') {
+          chartData.push(['Forfeitted Votes', overallForfeittedVoteCount]);
+        }
+        if (options.showUnregisteredVoters) {
+          chartData.push(['Unregistered Voters', unregisteredVoterCount]);
+        }
+        chartData = google.visualization.arrayToDataTable(chartData);
+
+        var chart = new google.visualization.PieChart(document.getElementById(id));
+        chart.draw(chartData, chartOptions);
+      }
+
+      function addCountTo(hash, key, count) {
+        var existingCount = hash[key];
+        if (existingCount === undefined) {
+          existingCount = 0;
+        }
+        hash[key] = existingCount + count;
+      }
+
+      function getSortedKeys(key2Value) {
+        var keys = [];
+        for (var key in key2Value) {
+          keys.push(key);
+        }
+
+        return keys.sort(function(a, b) {
+          return key2Value[b] - key2Value[a];
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <input type="checkbox" id="showPr">Show PKR, DAP &amp; PAS as PR</input>
+    <span style="margin-left: 20px;">Forfeitted votes: </span><select id="showForfeittedVotes">
+      <option value="noShow">Don't show</option>
+      <option value="show">Show</option>
+      <option value="showAsBn">Show as BN</option>
+      <option value="showAsPr">Show as PR</option>
+      <option value="showAsWinner">Show as winner's</option>
+      <option value="showAsRunnerUp">Show as runner up's</option>
+    </select>
+    <input type="checkbox" id="showUnregisteredVoters" style="margin-left: 20px;">Show unregistered, eligible voters (Malaysia only)</input>
+    <div id="charts"></div>
+  </body>
+</html>

@@ -1,0 +1,138 @@
+<html>
+  <head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type"></meta>
+    <meta content="utf-8" http-equiv="encoding"></meta>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+    <script type="text/javascript">
+      var prParties = ['PAS', 'PKR', 'DAP'];
+      var prName = 'PR';
+      var name2Number = {
+        increment: function(name, number) {
+          var existingNumber = this[name];
+          if (existingNumber === undefined) {
+            existingNumber = 0;
+          }
+          this[name] = existingNumber + number;
+        }
+      };
+
+      google.load("visualization", "1", {packages:["corechart"]});
+      var data = $.ajax({
+        url: 'parliament.json',
+        mimeType: 'text/plain',
+        async: false
+      }).responseText;
+      var states = JSON.parse(data);
+
+      $(document).ready(function() {
+        var showPrCheckBox = $("#showPr");
+        var includeForfeittedVotesDropDown = $("#includeForfeittedVotes");
+
+        var redrawChart = function() {
+          drawChart({
+            showAsPr: showPrCheckBox.is(":checked"),
+            includeForfeittedVotes: includeForfeittedVotesDropDown.val()
+          });
+        };
+
+        showPrCheckBox.click(redrawChart);
+        includeForfeittedVotesDropDown.click(redrawChart);
+        redrawChart();
+      });
+
+      function drawChart(options) {
+        var chartArea = $("#charts");
+        chartArea.empty();
+
+        var overallParty2SeatCount = Object.create(name2Number);
+        _.each(states, function(state) {
+          var stateName = state.name;
+          var party2SeatCount = Object.create(name2Number);
+
+          _.each(state.constituents, function(constituent) {
+            var validVoteCount = constituent.stat.castedBallotCount - constituent.stat.rejectedBallotCount;
+            var forfeittedVoteCount = constituent.stat.registeredVoterCount - validVoteCount;
+            var rankedCandidates = constituent.candidates.slice().sort(function(a, b) {
+              return b.voteCount - a.voteCount;
+            });
+            var runnerUp = rankedCandidates[1];
+            var winner = _.max(constituent.candidates, function(candidate) {
+              var voteCount = candidate.voteCount;
+              if (options.includeForfeittedVotes === "addToBn" && candidate.party === "BN") {
+                return voteCount + forfeittedVoteCount;
+              } else if (options.includeForfeittedVotes === "addToPr" && _.contains(prParties, candidate.party)) {
+                return voteCount + forfeittedVoteCount;
+              } else if (options.includeForfeittedVotes === "addToRunnerUp" && candidate.name === runnerUp.name) {
+                return voteCount + forfeittedVoteCount;
+              } else {
+                return voteCount;
+              }
+            });
+
+            var party = winner.party;
+            if (options.showAsPr && _.contains(prParties, party)) {
+              party = prName;
+            }
+            party2SeatCount.increment(party, 1);
+          });
+
+          _.each(Object.keys(party2SeatCount), function(party) {
+            overallParty2SeatCount.increment(party, party2SeatCount[party]);
+          })
+
+          var chartOptions = {
+            title: stateName,
+            pieSliceText: 'value'
+          };
+
+          var id = stateName;
+          chartArea.append("<div id='" + id + "' style='width: 900px; height: 500px;''></div>");
+
+          var chartData = [['Name', 'Seats']];
+          _.each(getSortedKeys(party2SeatCount), function(party) {
+            chartData.push([party, party2SeatCount[party]]);
+          });
+          chartData = google.visualization.arrayToDataTable(chartData);
+
+          var chart = new google.visualization.PieChart(document.getElementById(id));
+          chart.draw(chartData, chartOptions);
+        });
+
+        var chartOptions = {
+          title: 'Malaysia',
+          pieSliceText: 'value'
+        };
+
+        var id = "Overall";
+        chartArea.prepend("<div id='" + id + "' style='width: 900px; height: 500px;''></div>");
+
+        var chartData = [['Name', 'Seats']];
+        _.each(getSortedKeys(overallParty2SeatCount), function(party) {
+          chartData.push([party, overallParty2SeatCount[party]]);
+        });
+        chartData = google.visualization.arrayToDataTable(chartData);
+
+        var chart = new google.visualization.PieChart(document.getElementById(id));
+        chart.draw(chartData, chartOptions);
+      }
+
+      function getSortedKeys(key2Value) {
+        return Object.keys(key2Value).sort(function(a, b) {
+          return key2Value[b] - key2Value[a];
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <input type="checkbox" id="showPr">Show PKR, DAP &amp; PAS as PR</input>
+    <span style="margin-left: 20px;">Forfeitted votes: </span><select id="includeForfeittedVotes">
+      <option value="exclude">Exclude</option>
+      <option value="addToBn">Add to BN</option>
+      <option value="addToPr">Add to PR</option>
+      <option value="addToRunnerUp">Add to runner up</option>
+    </select>
+    <div id="charts"></div>
+  </body>
+</html>

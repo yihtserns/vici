@@ -1,0 +1,128 @@
+<html>
+  <head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type"></meta>
+    <meta content="utf-8" http-equiv="encoding"></meta>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.min.css">
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.jquery.min.js"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages: ["corechart", "bar"]});
+
+      var states = JSON.parse($.ajax({
+          url: 'parliament.json',
+          mimeType: 'text/plain',
+          async: false
+        }).responseText);
+      var winningPartySet = {};
+      var data = [];
+      var allStateNames = []
+      _.each(states, function(state) {
+        allStateNames.push(state.name);
+
+        _.each(state.constituents, function(constituent) {
+          var uncastedBallotCount = constituent.stat.registeredVoterCount - constituent.stat.castedBallotCount;
+          var forfeittedBallotCount = uncastedBallotCount + constituent.stat.rejectedBallotCount;
+
+          var candidates = constituent.candidates.sort(function(a, b) {
+            return b.voteCount - a.voteCount;
+          });
+
+          var winner = candidates[0];
+          var runnerUp = candidates[1];
+          var marginWon = winner.voteCount - runnerUp.voteCount;
+
+          winningPartySet[winner.party] = true;
+          data.push({
+            winner: winner,
+            state: state,
+            result: [constituent.name + " (" + winner.party + ")", marginWon, forfeittedBallotCount]
+          });
+        });
+      });
+
+      var includePartySet = _.clone(winningPartySet);
+      var includeStateNames = allStateNames;
+      $(document).ready(function() {
+        var statesFilterArea = $("#statesFilter");
+        _.each(states, function(state) {
+          statesFilterArea.append("<option>" + state.name + "</option>");
+        });
+        statesFilterArea.chosen();
+        statesFilterArea.change(function() {
+          includeStateNames = $(this).val() || allStateNames;
+
+          redrawChart();
+        });
+
+        var optionsArea = $("#options");
+        _.each(Object.keys(winningPartySet), function(party) {
+          var id = "show" + party;
+          optionsArea.append("<input type='checkbox' id='" + id + "' style='margin-left: 20px;' checked>" + party + "</input>");
+
+          $("#" + id).click(function() {
+            if ($(this).is(":checked")) {
+              includePartySet[party] = true;
+            } else {
+              delete includePartySet[party];
+            }
+            redrawChart();
+          });
+        });
+
+        redrawChart();
+      });
+
+      function redrawChart() {
+        var chartArea = $("#margin_vs_forfeitted_votes");
+        chartArea.empty();
+
+        var chartData = _.filter(data, function(datum) {
+            return _.contains(includeStateNames, datum.state.name)
+              && _.contains(Object.keys(includePartySet), datum.winner.party);
+          });
+        chartData = _.map(chartData, function(datum) {
+            return datum.result;
+          });
+        chartData = chartData.sort(function(a, b) {
+            return b[1] - a[1]; // Sort by margin won - easier to see if forfeitted votes would've affected the win
+          });
+
+        if (chartData.length > 0) {
+          chartData.unshift(["Constituent", "Margin", "Forfeitted"]);
+        }
+        chartData = google.visualization.arrayToDataTable(chartData);
+
+        var chartAreaHeight = chartData.getNumberOfRows() * 20;
+        var chartOptions = {
+          title: "Margin vs Forfeitted",
+          height: chartAreaHeight + 80,
+          chartArea: {
+            height: chartAreaHeight
+          },
+          hAxis: {
+            title: "Votes"
+          },
+          vAxis: {
+            title: "Constituent",
+            textPosition: "none"
+          }
+        };
+
+        var chart = new google.visualization.BarChart(document.getElementById("margin_vs_forfeitted_votes"));
+        chart.draw(chartData, chartOptions);
+      }
+    </script>
+  </head>
+  <body>
+    <div id="options">
+      <div>
+        <span style="margin-left: 20px;">Show only for states: </span>
+        <select id="statesFilter" multiple>
+        </select>
+      </div>
+    </div>
+    <div id="margin_vs_forfeitted_votes"></div>
+  </body>
+</html>
