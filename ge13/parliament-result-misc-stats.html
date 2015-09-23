@@ -61,7 +61,7 @@
           var id = "show" + party;
           optionsArea.append("<input type='checkbox' id='" + id + "' style='margin-left: 20px;' checked>" + party + "</input>");
 
-          $("#" + id).click(function() {
+          $("#" + id).change(function() {
             if ($(this).is(":checked")) {
               includePartySet[party] = true;
             } else {

@@ -27,18 +27,18 @@
       var states = JSON.parse(data);
 
       $(document).ready(function() {
-        var showPrCheckBox = $("#showPr");
-        var includeForfeittedVotesDropDown = $("#includeForfeittedVotes");
+        var showPrOption = $("#showPr");
+        var includeForfeittedVotesOption = $("#includeForfeittedVotes");
 
         var redrawChart = function() {
           drawChart({
-            showAsPr: showPrCheckBox.is(":checked"),
-            includeForfeittedVotes: includeForfeittedVotesDropDown.val()
+            showAsPr: showPrOption.is(":checked"),
+            includeForfeittedVotes: includeForfeittedVotesOption.val()
           });
         };
 
-        showPrCheckBox.click(redrawChart);
-        includeForfeittedVotesDropDown.click(redrawChart);
+        showPrOption.change(redrawChart);
+        includeForfeittedVotesOption.change(redrawChart);
         redrawChart();
       });
 

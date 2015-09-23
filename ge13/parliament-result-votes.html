@@ -29,20 +29,20 @@
       var unregisteredVoterCount = MALAYSIAN_POPULATION - totalRegisteredVoters;
 
       $(document).ready(function() {
-        var showPrCheckBox = $("#showPr");
-        var showForfeittedVotesCheckBox = $("#showForfeittedVotes");
-        var showUnregisteredVoters = $("#showUnregisteredVoters");
+        var showPrOption = $("#showPr");
+        var showForfeittedVotesOption = $("#showForfeittedVotes");
+        var showUnregisteredVotersOption = $("#showUnregisteredVoters");
         var redrawChart = function() {
           drawChart({
-            showAsPr: showPrCheckBox.is(":checked"),
-            forfeittedVotes: showForfeittedVotesCheckBox.val(),
-            showUnregisteredVoters: showUnregisteredVoters.is(":checked")
+            showAsPr: showPrOption.is(":checked"),
+            forfeittedVotes: showForfeittedVotesOption.val(),
+            showUnregisteredVoters: showUnregisteredVotersOption.is(":checked")
           })
         };
 
-        showPrCheckBox.click(redrawChart);
-        showForfeittedVotesCheckBox.click(redrawChart);
-        showUnregisteredVoters.click(redrawChart);
+        showPrOption.change(redrawChart);
+        showForfeittedVotesOption.change(redrawChart);
+        showUnregisteredVotersOption.change(redrawChart);
 
         redrawChart();
       });
