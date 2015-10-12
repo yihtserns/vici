@@ -1,0 +1,302 @@
+{
+    "Top 20%": {
+        "1979": {
+            "Overall": 55.5,
+            "Bumiputera": 51.8,
+            "Chinese": 52.5,
+            "Indian": 52.0,
+            "Others": 65.1
+        },
+        "1984": {
+            "Overall": 53.5,
+            "Bumiputera": 51.5,
+            "Chinese": 50.9,
+            "Indian": 48.7,
+            "Others": 60.4
+        },
+        "1987": {
+            "Overall": 51.5,
+            "Bumiputera": 50.0,
+            "Chinese": 48.7,
+            "Indian": 47.6,
+            "Others": 70.7
+        },
+        "1989": {
+            "Overall": 50.0,
+            "Bumiputera": 49.0,
+            "Chinese": 48.1,
+            "Indian": 46.3,
+            "Others": 47.2
+        },
+        "1992": {
+            "Overall": 51.5,
+            "Bumiputera": 50.1,
+            "Chinese": 48.7,
+            "Indian": 46.9,
+            "Others": 53.7
+        },
+        "1995": {
+            "Overall": 51.3,
+            "Bumiputera": 49.5,
+            "Chinese": 50.1,
+            "Indian": 47.5,
+            "Others": 48.2
+        },
+        "1997": {
+            "Overall": 52.4,
+            "Bumiputera": 50.8,
+            "Chinese": 49.3,
+            "Indian": 48.4,
+            "Others": 62.2
+        },
+        "1999": {
+            "Overall": 50.5,
+            "Bumiputera": 48.7,
+            "Chinese": 48.8,
+            "Indian": 47.6,
+            "Others": 47.1
+        },
+        "2002": {
+            "Overall": 51.3,
+            "Bumiputera": 49.1,
+            "Chinese": 50.9,
+            "Indian": 46.2,
+            "Others": 50.4
+        },
+        "2004": {
+            "Overall": 51.2,
+            "Bumiputera": 50.6,
+            "Chinese": 50.1,
+            "Indian": 48.6,
+            "Others": 51.9
+        },
+        "2007": {
+            "Overall": 49.8,
+            "Bumiputera": 48.6,
+            "Chinese": 48.9,
+            "Indian": 48.0,
+            "Others": 60.7
+        },
+        "2009": {
+            "Overall": 49.6,
+            "Bumiputera": 49.5,
+            "Chinese": 48.4,
+            "Indian": 48.8,
+            "Others": 55.3
+        },
+        "2012": {
+            "Overall": 48.6,
+            "Bumiputera": 47.9,
+            "Chinese": 47.9,
+            "Indian": 50.1,
+            "Others": 49.8
+        },
+        "2014": {
+            "Overall": 46.6,
+            "Bumiputera": 45.5,
+            "Chinese": 46.9,
+            "Indian": 46.7,
+            "Others": 48.2
+        }
+    },
+    "Middle 40%": {
+        "1979": {
+            "Overall": 32.7,
+            "Bumiputera": 34.9,
+            "Chinese": 34.3,
+            "Indian": 33.6,
+            "Others": 27.1
+        },
+        "1984": {
+            "Overall": 33.8,
+            "Bumiputera": 35.0,
+            "Chinese": 35.0,
+            "Indian": 35.1,
+            "Others": 34.7
+        },
+        "1987": {
+            "Overall": 34.8,
+            "Bumiputera": 35.6,
+            "Chinese": 36.3,
+            "Indian": 35.7,
+            "Others": 24.8
+        },
+        "1989": {
+            "Overall": 35.5,
+            "Bumiputera": 35.9,
+            "Chinese": 36.3,
+            "Indian": 36.2,
+            "Others": 36.3
+        },
+        "1992": {
+            "Overall": 34.8,
+            "Bumiputera": 35.4,
+            "Chinese": 36.0,
+            "Indian": 36.5,
+            "Others": 40.9
+        },
+        "1995": {
+            "Overall": 35.0,
+            "Bumiputera": 36.3,
+            "Chinese": 35.3,
+            "Indian": 36.3,
+            "Others": 35.1
+        },
+        "1997": {
+            "Overall": 34.4,
+            "Bumiputera": 35.0,
+            "Chinese": 36.2,
+            "Indian": 35.8,
+            "Others": 28.3
+        },
+        "1999": {
+            "Overall": 35.5,
+            "Bumiputera": 36.4,
+            "Chinese": 36.5,
+            "Indian": 36.3,
+            "Others": 35.0
+        },
+        "2002": {
+            "Overall": 35.2,
+            "Bumiputera": 36.3,
+            "Chinese": 35.3,
+            "Indian": 37.4,
+            "Others": 35.5
+        },
+        "2004": {
+            "Overall": 35.3,
+            "Bumiputera": 35.4,
+            "Chinese": 35.5,
+            "Indian": 35.9,
+            "Others": 34.0
+        },
+        "2007": {
+            "Overall": 35.6,
+            "Bumiputera": 36.3,
+            "Chinese": 36.2,
+            "Indian": 35.7,
+            "Others": 27.8
+        },
+        "2009": {
+            "Overall": 36.1,
+            "Bumiputera": 36.1,
+            "Chinese": 36.4,
+            "Indian": 35.7,
+            "Others": 31.6
+        },
+        "2012": {
+            "Overall": 36.6,
+            "Bumiputera": 37.0,
+            "Chinese": 36.7,
+            "Indian": 35.1,
+            "Others": 34.7
+        },
+        "2014": {
+            "Overall": 36.9,
+            "Bumiputera": 37.4,
+            "Chinese": 36.8,
+            "Indian": 36.2,
+            "Others": 37.0
+        }
+    },
+    "Bottom 40%": {
+        "1979": {
+            "Overall": 11.9,
+            "Bumiputera": 13.3,
+            "Chinese": 13.2,
+            "Indian": 14.4,
+            "Others": 7.8
+        },
+        "1984": {
+            "Overall": 12.7,
+            "Bumiputera": 13.5,
+            "Chinese": 14.1,
+            "Indian": 16.2,
+            "Others": 4.9
+        },
+        "1987": {
+            "Overall": 13.7,
+            "Bumiputera": 14.4,
+            "Chinese": 15.0,
+            "Indian": 16.7,
+            "Others": 4.5
+        },
+        "1989": {
+            "Overall": 14.5,
+            "Bumiputera": 15.1,
+            "Chinese": 15.6,
+            "Indian": 17.5,
+            "Others": 16.5
+        },
+        "1992": {
+            "Overall": 13.7,
+            "Bumiputera": 14.5,
+            "Chinese": 15.3,
+            "Indian": 16.6,
+            "Others": 5.4
+        },
+        "1995": {
+            "Overall": 13.7,
+            "Bumiputera": 14.2,
+            "Chinese": 14.6,
+            "Indian": 16.2,
+            "Others": 16.7
+        },
+        "1997": {
+            "Overall": 13.2,
+            "Bumiputera": 14.2,
+            "Chinese": 14.5,
+            "Indian": 15.8,
+            "Others": 9.5
+        },
+        "1999": {
+            "Overall": 14.0,
+            "Bumiputera": 14.9,
+            "Chinese": 14.7,
+            "Indian": 16.1,
+            "Others": 17.9
+        },
+        "2002": {
+            "Overall": 13.5,
+            "Bumiputera": 14.6,
+            "Chinese": 13.8,
+            "Indian": 16.4,
+            "Others": 14.1
+        },
+        "2004": {
+            "Overall": 13.5,
+            "Bumiputera": 14.0,
+            "Chinese": 14.4,
+            "Indian": 15.5,
+            "Others": 14.1
+        },
+        "2007": {
+            "Overall": 14.6,
+            "Bumiputera": 15.1,
+            "Chinese": 14.9,
+            "Indian": 16.3,
+            "Others": 11.5
+        },
+        "2009": {
+            "Overall": 14.3,
+            "Bumiputera": 14.4,
+            "Chinese": 15.2,
+            "Indian": 15.5,
+            "Others": 13.1
+        },
+        "2012": {
+            "Overall": 14.8,
+            "Bumiputera": 15.1,
+            "Chinese": 15.4,
+            "Indian": 14.8,
+            "Others": 15.5
+        },
+        "2014": {
+            "Overall": 16.5,
+            "Bumiputera": 17.1,
+            "Chinese": 16.3,
+            "Indian": 17.1,
+            "Others": 14.9
+        }
+    }
+}

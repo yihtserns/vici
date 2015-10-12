@@ -1,0 +1,157 @@
+<html>
+  <head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type"></meta>
+    <meta content="utf-8" http-equiv="encoding"></meta>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+    <script type="text/javascript" src="inflation-rates.js"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages: ["corechart", "bar", "treemap"]});
+
+      var rank2Year2Category2MeanIncome = JSON.parse($.ajax({
+        url: 'households-rank-mean-gross-income.json',
+        mimeType: 'text/plain',
+        async: false
+      }).responseText);
+
+      var category2Year2Rank2MeanIncome = (function createMap() {
+        return new Map(createMap);
+      })();
+      _.each(rank2Year2Category2MeanIncome, function(year2Category2MeanIncome, rank) {
+        _.each(year2Category2MeanIncome, function(category2MeanIncome, year) {
+          _.each(category2MeanIncome, function(meanIncome, category) {
+            category2Year2Rank2MeanIncome.get(category).get(year)[rank] = meanIncome;
+          });
+        });
+      });
+
+      var year2Rank2Category2MeanIncome = (function createMap() {
+        return new Map(createMap);
+      })();
+      _.each(rank2Year2Category2MeanIncome, function(year2Category2MeanIncome, rank) {
+        _.each(year2Category2MeanIncome, function(category2MeanIncome, year) {
+          _.each(category2MeanIncome, function(meanIncome, category) {
+            year2Rank2Category2MeanIncome.get(year).get(rank)[category] = meanIncome;
+          });
+        });
+      });
+
+      var years = Object.keys(year2Rank2Category2MeanIncome);
+      var latestYear = _.max(years);
+
+      var id2Chart = {};
+      var getChartWithId = function(id, createChartWithElement) {
+        var chart = id2Chart[id];
+
+        if (chart === undefined) {
+          $(document.body).append("<div id='" + id + "'></div>");
+          chart = createChartWithElement(document.getElementById(id));
+          id2Chart[id] = chart;
+        }
+
+        return chart;
+      }
+
+      $(document).ready(function() {
+        $("#adjustForInflation").change(redrawCharts);
+        $(window).resize(redrawCharts);
+
+        redrawCharts();
+      });
+
+      function redrawCharts() {
+        var calculateRealValue = $("#adjustForInflation").is(":checked")
+          ? vici.wealth.inflation.calculateInflationAdjustedValue
+          : function(year, value) { return value; };
+
+        drawTreeMap();
+        drawBarChart(calculateRealValue);
+      }
+
+      function drawTreeMap() {
+        var rank2Category2MeanIncome = year2Rank2Category2MeanIncome[latestYear];
+
+        var chartData = [
+          ["Rank", "Parent", "Mean gross income"],
+          ["All", null, 0]
+        ];
+        _.each(Object.keys(rank2Category2MeanIncome), function(rank) {
+          chartData.push([rank, "All", 0]);
+        });
+        _.each(rank2Category2MeanIncome, function(category2MeanIncome, rank) {
+          _.each(category2MeanIncome, function(meanIncome, category) {
+            if (category !== "Overall") {
+              chartData.push([
+                rank + " - " + category,
+                rank,
+                meanIncome
+              ]);
+            }
+          });
+        });
+        chartData = google.visualization.arrayToDataTable(chartData);
+
+        var chart = getChartWithId("treeMap", function(element) {
+          return new google.visualization.TreeMap(element);
+        });
+
+        var chartOptions = {
+          "title": "Mean gross income (" + latestYear + ")",
+          "minColor": "red",
+          "maxColor": "blue",
+          "showScale": true
+        };
+        chart.draw(chartData, chartOptions);
+      }
+
+      function drawBarChart(calculateInflationAdjustedValue) {
+        _.each(category2Year2Rank2MeanIncome, function(year2Rank2MeanIncome, category) {
+          var chartData = _.map(year2Rank2MeanIncome, function(rank2MeanIncome, year) {
+            var top20MeanIncome = rank2MeanIncome["Top 20%"];
+            return [
+              year,
+              calculateInflationAdjustedValue(year, (top20MeanIncome - rank2MeanIncome["Middle 40%"])),
+              calculateInflationAdjustedValue(year, (top20MeanIncome - rank2MeanIncome["Bottom 40%"]))
+            ];
+          });
+          chartData = _.sortBy(chartData, function(data) { return data[0]; }); // sort by year column
+          chartData.unshift(["Year", "Top 20% - Middle 40%", "Top 20% - Bottom 40%"]);
+          chartData = google.visualization.arrayToDataTable(chartData);
+
+          var chart = getChartWithId("chart" + category, function(element) {
+            return new google.visualization.ColumnChart(element);
+          });
+
+          var chartOptions = {
+            title: "Mean gross income difference (" + category + ")",
+            vAxis: { maxValue: 12000 } // so the y-axis numbers between charts are the same
+          };
+          chart.draw(chartData, chartOptions);
+        });
+      }
+
+      function Map(createInitialValue) {
+        this.get = function(key) {
+          var existingValue = this[key];
+
+          if (existingValue === undefined) {
+            existingValue = createInitialValue();
+            this[key] = existingValue;
+          }
+
+          return existingValue;
+        }
+
+        Object.defineProperties(this, {
+          "get": {
+            enumerable: false
+          }
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <input id="adjustForInflation" type="checkbox">Adjust for inflation</input>
+  </body>
+</html>

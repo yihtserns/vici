@@ -1,0 +1,100 @@
+{
+    "1979": {
+        "Overall": 678,
+        "Bumiputera": 492,
+        "Chinese": 1002,
+        "Indian": 756,
+        "Others": 1475
+    },
+    "1984": {
+        "Overall": 1098,
+        "Bumiputera": 844,
+        "Chinese": 1552,
+        "Indian": 1107,
+        "Others": 2957
+    },
+    "1987": {
+        "Overall": 1083,
+        "Bumiputera": 868,
+        "Chinese": 1488,
+        "Indian": 1105,
+        "Others": 2992
+    },
+    "1989": {
+        "Overall": 1169,
+        "Bumiputera": 940,
+        "Chinese": 1631,
+        "Indian": 1209,
+        "Others": 955
+    },
+    "1992": {
+        "Overall": 1566,
+        "Bumiputera": 1268,
+        "Chinese": 2192,
+        "Indian": 1604,
+        "Others": 1163
+    },
+    "1995": {
+        "Overall": 2020,
+        "Bumiputera": 1604,
+        "Chinese": 2890,
+        "Indian": 2140,
+        "Others": 1284
+    },
+    "1997": {
+        "Overall": 2606,
+        "Bumiputera": 2038,
+        "Chinese": 3738,
+        "Indian": 2896,
+        "Others": 1680
+    },
+    "1999": {
+        "Overall": 2472,
+        "Bumiputera": 1984,
+        "Chinese": 3456,
+        "Indian": 2702,
+        "Others": 1371
+    },
+    "2002": {
+        "Overall": 3011,
+        "Bumiputera": 2376,
+        "Chinese": 4279,
+        "Indian": 3044,
+        "Others": 2165
+    },
+    "2004": {
+        "Overall": 3249,
+        "Bumiputera": 2711,
+        "Chinese": 4437,
+        "Indian": 3456,
+        "Others": 2312
+    },
+    "2007": {
+        "Overall": 3686,
+        "Bumiputera": 3156,
+        "Chinese": 4853,
+        "Indian": 3799,
+        "Others": 3561
+    },
+    "2009": {
+        "Overall": 4025,
+        "Bumiputera": 3624,
+        "Chinese": 5011,
+        "Indian": 3999,
+        "Others": 3640
+    },
+    "2012": {
+        "Overall": 5000,
+        "Bumiputera": 4457,
+        "Chinese": 6366,
+        "Indian": 5233,
+        "Others": 3843
+    },
+    "2014": {
+        "Overall": 6141,
+        "Bumiputera": 5548,
+        "Chinese": 7666,
+        "Indian": 6246,
+        "Others": 6011
+    }
+}

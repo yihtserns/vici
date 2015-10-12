@@ -1,0 +1,100 @@
+{
+    "1979": {
+        "Overall": 429,
+        "Bumiputera": 338,
+        "Chinese": 656,
+        "Indian": 521,
+        "Others": 653
+    },
+    "1984": {
+        "Overall": 719,
+        "Bumiputera": 583,
+        "Chinese": 1060,
+        "Indian": 775,
+        "Others": 1399
+    },
+    "1987": {
+        "Overall": 738,
+        "Bumiputera": 613,
+        "Chinese": 1063,
+        "Indian": 805,
+        "Others": 788
+    },
+    "1989": {
+        "Overall": 816,
+        "Bumiputera": 679,
+        "Chinese": 1176,
+        "Indian": 890,
+        "Others": 698
+    },
+    "1992": {
+        "Overall": 1077,
+        "Bumiputera": 887,
+        "Chinese": 1565,
+        "Indian": 1184,
+        "Others": 833
+    },
+    "1995": {
+        "Overall": 1377,
+        "Bumiputera": 1143,
+        "Chinese": 2010,
+        "Indian": 1553,
+        "Others": 899
+    },
+    "1997": {
+        "Overall": 1724,
+        "Bumiputera": 1407,
+        "Chinese": 2583,
+        "Indian": 2081,
+        "Others": 1163
+    },
+    "1999": {
+        "Overall": 1704,
+        "Bumiputera": 1423,
+        "Chinese": 2486,
+        "Indian": 1969,
+        "Others": 997
+    },
+    "2002": {
+        "Overall": 2049,
+        "Bumiputera": 1695,
+        "Chinese": 2943,
+        "Indian": 2272,
+        "Others": 1542
+    },
+    "2004": {
+        "Overall": 2211,
+        "Bumiputera": 1862,
+        "Chinese": 3089,
+        "Indian": 2469,
+        "Others": 1567
+    },
+    "2007": {
+        "Overall": 2552,
+        "Bumiputera": 2228,
+        "Chinese": 3452,
+        "Indian": 2760,
+        "Others": 1884
+    },
+    "2009": {
+        "Overall": 2830,
+        "Bumiputera": 2531,
+        "Chinese": 3631,
+        "Indian": 2836,
+        "Others": 2088
+    },
+    "2012": {
+        "Overall": 3626,
+        "Bumiputera": 3282,
+        "Chinese": 4643,
+        "Indian": 3676,
+        "Others": 2762
+    },
+    "2014": {
+        "Overall": 4585,
+        "Bumiputera": 4214,
+        "Chinese": 5708,
+        "Indian": 4627,
+        "Others": 4372
+    }
+}

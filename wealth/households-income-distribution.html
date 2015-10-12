@@ -1,0 +1,181 @@
+<html>
+  <head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type"></meta>
+    <meta content="utf-8" http-equiv="encoding"></meta>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages: ["corechart", "bar"]});
+
+      var category2year2IncomeRange2Percentage = JSON.parse($.ajax({
+        url: 'households-income-distribution.json',
+        mimeType: 'text/plain',
+        async: false
+      }).responseText);
+
+      $(document).ready(function() {
+        var categoryOption = $("#category");
+
+        var redrawChart = function() {
+          var category = categoryOption.val();
+          var year2IncomeRange2Percentage = category2year2IncomeRange2Percentage[category];
+
+          drawBarChart(year2IncomeRange2Percentage);
+          drawLineChart(year2IncomeRange2Percentage);
+          drawPieChart(year2IncomeRange2Percentage);
+        }
+
+        categoryOption.change(redrawChart);
+        redrawChart();
+      });
+
+      function drawBarChart(year2IncomeRange2Percentage) {
+        var years = Object.keys(year2IncomeRange2Percentage).slice().sort();
+        var chartData = [
+          ["<= 499"],
+          ["500..999"],
+          ["1,000..1,499"],
+          ["1,500..1,999"],
+          ["2,000..2,499"],
+          ["2,500..2,999"],
+          ["3,000..3,499"],
+          ["3,500..3,999"],
+          ["4,000..4,999"],
+          [">= 5,000"]
+        ];
+
+        _.each(years, function(year) {
+          var incomeRange2Percentage = year2IncomeRange2Percentage[year];
+          _.each(chartData, function(arr) {
+            var incomeRange = arr[0];
+            var percentage = incomeRange2Percentage[incomeRange];
+
+            arr.push(percentage);
+          });
+        });
+        chartData.unshift(["Year"].concat(years));
+        chartData = google.visualization.arrayToDataTable(chartData);
+
+        var chartAreaHeight =  chartData.getNumberOfRows() * 50;
+        var chartOptions = {
+          title: "Overall income distribution",
+          height: chartAreaHeight + 80,
+          chartArea: {
+            height: chartAreaHeight
+          },
+          hAxis: {
+            title: "% of households"
+          },
+          vAxis: {
+            title: "Year"
+          },
+          bars: 'horizontal'
+        };
+
+        var chart = new google.visualization.BarChart(document.getElementById("barChart"));
+        chart.draw(chartData, chartOptions);
+      }
+
+      function drawLineChart(year2IncomeRange2Percentage) {
+        var years = Object.keys(year2IncomeRange2Percentage).slice().sort();
+        var chartData = [
+          [
+            "Year",
+            "<= 499",
+            "500..999",
+            "1,000..1,499",
+            "1,500..1,999",
+            "2,000..2,499",
+            "2,500..2,999",
+            "3,000..3,499",
+            "3,500..3,999",
+            "4,000..4,999",
+            ">= 5,000"
+          ]
+        ]
+        _.each(years, function(year) {
+          var incomeRange2Percentage = year2IncomeRange2Percentage[year];
+
+          var row = [year];
+          for (var i = 1; i < chartData[0].length; i++) {
+            var incomeRange = chartData[0][i];
+            var percentage = incomeRange2Percentage[incomeRange];
+
+            row.push(percentage);
+          }
+          chartData.push(row);
+        });
+        chartData = google.visualization.arrayToDataTable(chartData);
+
+        var chartAreaHeight =  chartData.getNumberOfRows() * 50;
+        var chartOptions = {
+          title: "Overall income distribution",
+          height: chartAreaHeight + 80,
+          chartArea: {
+            height: chartAreaHeight
+          },
+          hAxis: {
+            title: "Year"
+          },
+          vAxis: {
+            title: "% of households"
+          }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById("lineChart"));
+        chart.draw(chartData, chartOptions);
+      }
+
+      function drawPieChart(year2IncomeRange2Percentage) {
+        var years = Object.keys(year2IncomeRange2Percentage).slice().sort();
+        var incomeRanges = [
+          "<= 499",
+          "500..999",
+          "1,000..1,499",
+          "1,500..1,999",
+          "2,000..2,499",
+          "2,500..2,999",
+          "3,000..3,499",
+          "3,500..3,999",
+          "4,000..4,999",
+          ">= 5,000"
+        ]
+        var chartData = [
+          ["Income range", "% of households"]
+        ]
+        var year = _.last(years);
+        var incomeRange2Percentage = year2IncomeRange2Percentage[year];
+
+        _.each(incomeRanges, function(incomeRange) {
+          var percentage = incomeRange2Percentage[incomeRange];
+          chartData.push([incomeRange, percentage]);
+        });
+        chartData = google.visualization.arrayToDataTable(chartData);
+
+        var chartAreaHeight =  chartData.getNumberOfRows() * 50;
+        var chartOptions = {
+          title: "Overall income distribution (" + year + ")",
+          pieSliceText: "label",
+          height: chartAreaHeight + 80,
+          chartArea: {
+            height: chartAreaHeight
+          }
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById("pieChart"));
+        chart.draw(chartData, chartOptions);
+      }
+    </script>
+  </head>
+  <body>
+    Category: <select id="category">
+      <option>Overall</option>
+      <option>Urban</option>
+      <option>Rural</option>
+    </select>
+    <div id="barChart"></div>
+    <div id="lineChart"></div>
+    <div id="pieChart"></div>
+  </body>
+</html>

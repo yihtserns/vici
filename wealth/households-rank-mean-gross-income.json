@@ -1,0 +1,302 @@
+{
+    "Top 20%": {
+        "1979": {
+            "Overall": 1877,
+            "Bumiputera": 1274,
+            "Chinese": 2630,
+            "Indian": 1966,
+            "Others": 4802
+        },
+        "1984": {
+            "Overall": 2938,
+            "Bumiputera": 2176,
+            "Chinese": 3953,
+            "Indian": 2694,
+            "Others": 8932
+        },
+        "1987": {
+            "Overall": 2789,
+            "Bumiputera": 2169,
+            "Chinese": 3629,
+            "Indian": 2627,
+            "Others": 10568
+        },
+        "1989": {
+            "Overall": 2925,
+            "Bumiputera": 2303,
+            "Chinese": 3920,
+            "Indian": 2795,
+            "Others": 2256
+        },
+        "1992": {
+            "Overall": 3965,
+            "Bumiputera": 3191,
+            "Chinese": 5334,
+            "Indian": 3739,
+            "Others": 2794
+        },
+        "1995": {
+            "Overall": 5202,
+            "Bumiputera": 3986,
+            "Chinese": 7270,
+            "Indian": 5100,
+            "Others": 3106
+        },
+        "1997": {
+            "Overall": 6854,
+            "Bumiputera": 5195,
+            "Chinese": 9246,
+            "Indian": 7038,
+            "Others": 4351
+        },
+        "1999": {
+            "Overall": 6268,
+            "Bumiputera": 4855,
+            "Chinese": 8470,
+            "Indian": 6456,
+            "Others": 3242
+        },
+        "2002": {
+            "Overall": 7745,
+            "Bumiputera": 5849,
+            "Chinese": 10914,
+            "Indian": 7055,
+            "Others": 5472
+        },
+        "2004": {
+            "Overall": 8337,
+            "Bumiputera": 6877,
+            "Chinese": 11131,
+            "Indian": 8405,
+            "Others": 6016
+        },
+        "2007": {
+            "Overall": 9173,
+            "Bumiputera": 7666,
+            "Chinese": 11878,
+            "Indian": 9119,
+            "Others": 10830
+        },
+        "2009": {
+            "Overall": 9987,
+            "Bumiputera": 8976,
+            "Chinese": 12152,
+            "Indian": 9774,
+            "Others": 10123
+        },
+        "2012": {
+            "Overall": 12159,
+            "Bumiputera": 10666,
+            "Chinese": 15254,
+            "Indian": 13127,
+            "Others": 9741
+        },
+        "2014": {
+            "Overall": 14305,
+            "Bumiputera": 12630,
+            "Chinese": 17981,
+            "Indian": 14605,
+            "Others": 14732
+        }
+    },
+    "Middle 40%": {
+        "1979": {
+            "Overall": 554,
+            "Bumiputera": 429,
+            "Chinese": 859,
+            "Indian": 636,
+            "Others": 999
+        },
+        "1984": {
+            "Overall": 929,
+            "Bumiputera": 738,
+            "Chinese": 1363,
+            "Indian": 974,
+            "Others": 2564
+        },
+        "1987": {
+            "Overall": 943,
+            "Bumiputera": 773,
+            "Chinese": 1349,
+            "Indian": 987,
+            "Others": 1853
+        },
+        "1989": {
+            "Overall": 1037,
+            "Bumiputera": 844,
+            "Chinese": 1483,
+            "Indian": 1096,
+            "Others": 867
+        },
+        "1992": {
+            "Overall": 1388,
+            "Bumiputera": 1121,
+            "Chinese": 1971,
+            "Indian": 1469,
+            "Others": 1040
+        },
+        "1995": {
+            "Overall": 1777,
+            "Bumiputera": 1461,
+            "Chinese": 2560,
+            "Indian": 1954,
+            "Others": 1131
+        },
+        "1997": {
+            "Overall": 2250,
+            "Bumiputera": 1795,
+            "Chinese": 3405,
+            "Indian": 2606,
+            "Others": 1380
+        },
+        "1999": {
+            "Overall": 2204,
+            "Bumiputera": 1810,
+            "Chinese": 3168,
+            "Indian": 2460,
+            "Others": 1204
+        },
+        "2002": {
+            "Overall": 2660,
+            "Bumiputera": 2167,
+            "Chinese": 3780,
+            "Indian": 2860,
+            "Others": 1931
+        },
+        "2004": {
+            "Overall": 2875,
+            "Bumiputera": 2408,
+            "Chinese": 3951,
+            "Indian": 3116,
+            "Others": 1973
+        },
+        "2007": {
+            "Overall": 3282,
+            "Bumiputera": 2863,
+            "Chinese": 4389,
+            "Indian": 3393,
+            "Others": 2459
+        },
+        "2009": {
+            "Overall": 3631,
+            "Bumiputera": 3272,
+            "Chinese": 4560,
+            "Indian": 3569,
+            "Others": 2875
+        },
+        "2012": {
+            "Overall": 4573,
+            "Bumiputera": 4123,
+            "Chinese": 5836,
+            "Indian": 4589,
+            "Others": 3341
+        },
+        "2014": {
+            "Overall": 5662,
+            "Bumiputera": 5190,
+            "Chinese": 7049,
+            "Indian": 5646,
+            "Others": 5510
+        }
+    },
+    "Bottom 40%": {
+        "1979": {
+            "Overall": 201,
+            "Bumiputera": 164,
+            "Chinese": 331,
+            "Indian": 272,
+            "Others": 287
+        },
+        "1984": {
+            "Overall": 347,
+            "Bumiputera": 285,
+            "Chinese": 541,
+            "Indian": 447,
+            "Others": 362
+        },
+        "1987": {
+            "Overall": 371,
+            "Bumiputera": 311,
+            "Chinese": 556,
+            "Indian": 462,
+            "Others": 339
+        },
+        "1989": {
+            "Overall": 424,
+            "Bumiputera": 356,
+            "Chinese": 634,
+            "Indian": 528,
+            "Others": 394
+        },
+        "1992": {
+            "Overall": 545,
+            "Bumiputera": 455,
+            "Chinese": 843,
+            "Indian": 671,
+            "Others": 470
+        },
+        "1995": {
+            "Overall": 693,
+            "Bumiputera": 572,
+            "Chinese": 1062,
+            "Indian": 868,
+            "Others": 539
+        },
+        "1997": {
+            "Overall": 867,
+            "Bumiputera": 724,
+            "Chinese": 1356,
+            "Indian": 1149,
+            "Others": 660
+        },
+        "1999": {
+            "Overall": 865,
+            "Bumiputera": 742,
+            "Chinese": 1271,
+            "Indian": 1092,
+            "Others": 616
+        },
+        "2002": {
+            "Overall": 1019,
+            "Bumiputera": 868,
+            "Chinese": 1485,
+            "Indian": 1249,
+            "Others": 766
+        },
+        "2004": {
+            "Overall": 1101,
+            "Bumiputera": 952,
+            "Chinese": 1597,
+            "Indian": 1339,
+            "Others": 820
+        },
+        "2007": {
+            "Overall": 1345,
+            "Bumiputera": 1194,
+            "Chinese": 1805,
+            "Indian": 1545,
+            "Others": 1025
+        },
+        "2009": {
+            "Overall": 1440,
+            "Bumiputera": 1300,
+            "Chinese": 1897,
+            "Indian": 1547,
+            "Others": 1187
+        },
+        "2012": {
+            "Overall": 1847,
+            "Bumiputera": 1686,
+            "Chinese": 2455,
+            "Indian": 1937,
+            "Others": 1472
+        },
+        "2014": {
+            "Overall": 2537,
+            "Bumiputera": 2367,
+            "Chinese": 3127,
+            "Indian": 2672,
+            "Others": 2234
+        }
+    }
+}
