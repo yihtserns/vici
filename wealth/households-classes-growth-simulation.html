@@ -59,19 +59,36 @@
       }
 
       $(document).ready(function() {
-        $(window).resize(redrawCharts);
+        var minIndex = 0;
+        var maxIndex = years.length - 1;
+        var startIndex = minIndex;
+        var endIndex = maxIndex;
+        $("#yearRangeSlider").slider({
+          range: true,
+          min: minIndex,
+          max: maxIndex,
+          values: [startIndex, endIndex],
+          slide: function(event, ui) {
+            redrawCharts(ui.values[0], ui.values[1]);
+          }
+        });
 
-        redrawCharts();
+        $(window).resize(redrawCharts);
+        redrawCharts(startIndex, endIndex);
       });
 
-      function redrawCharts() {
-        drawLineChart();
+      function redrawCharts(startIndex, endIndex) {
+        var startYear = years[startIndex];
+        var endYear = years[endIndex];
+        displayGrowthRateYearRange(startYear, endYear);
+        drawLineChart(startYear, endYear);
       }
 
-      function drawLineChart() {
-        var startYear = "1979";
-        var endYear = "2014";
+      function displayGrowthRateYearRange(startYear, endYear) {
+        $("#yearRange").val(startYear + " - " + endYear);
+      }
 
+      function drawLineChart(startYear, endYear) {
         var top20YearlyGrowthRate = calculateYearlyGrowthRate(
           parseInt(endYear, 10) - parseInt(startYear, 10),
           rank2Year2MeanIncome["Top 20%"][startYear],
@@ -147,5 +164,6 @@
     </script>
   </head>
   <body>
+    Growth rate calculated from: <input type="text" id="yearRange" readonly style="border: 0"></input><div id="yearRangeSlider"></div>
   </body>
 </html>
