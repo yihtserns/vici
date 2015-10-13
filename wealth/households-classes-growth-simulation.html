@@ -1,0 +1,152 @@
+<html>
+  <head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type"></meta>
+    <meta content="utf-8" http-equiv="encoding"></meta>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/themes/smoothness/jquery-ui.css">
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+    <script type="text/javascript" src="inflation.js"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages: ["corechart"]});
+
+      var rank2Year2Category2MeanIncome = JSON.parse($.ajax({
+        url: 'households-rank-mean-gross-income.json',
+        mimeType: 'text/plain',
+        async: false
+      }).responseText);
+
+      var category2Rank2Year2MeanIncome = (function createMap() {
+        return new Map(createMap);
+      })();
+      _.each(rank2Year2Category2MeanIncome, function(year2Category2MeanIncome, rank) {
+        _.each(year2Category2MeanIncome, function(category2MeanIncome, year) {
+          _.each(category2MeanIncome, function(meanIncome, category) {
+            category2Rank2Year2MeanIncome.get(category).get(rank)[year] = meanIncome;
+          });
+        });
+      });
+
+      var year2Rank2Category2MeanIncome = (function createMap() {
+        return new Map(createMap);
+      })();
+      _.each(rank2Year2Category2MeanIncome, function(year2Category2MeanIncome, rank) {
+        _.each(year2Category2MeanIncome, function(category2MeanIncome, year) {
+          _.each(category2MeanIncome, function(meanIncome, category) {
+            year2Rank2Category2MeanIncome.get(year).get(rank)[category] = meanIncome;
+          });
+        });
+      });
+      var years = Object.keys(year2Rank2Category2MeanIncome).slice().sort();
+      var latestYear = _.max(years);
+
+      var id2Chart = {};
+      var getChartWithId = function(id, createChartWithElement) {
+        var chart = id2Chart[id];
+
+        if (chart === undefined) {
+          $(document.body).append("<div id='" + id + "'></div>");
+          chart = createChartWithElement(document.getElementById(id));
+          id2Chart[id] = chart;
+        }
+
+        return chart;
+      }
+
+      $(document).ready(function() {
+        $(window).resize(redrawCharts);
+
+        redrawCharts();
+      });
+
+      function redrawCharts() {
+        drawLineChart();
+      }
+
+      function drawLineChart() {
+        var rank2Year2MeanIncome = category2Rank2Year2MeanIncome["Overall"];
+        var startYear = "1979";
+        var endYear = "2014";
+
+        var top20YearlyGrowthRate = calculateYearlyGrowthRate(
+          parseInt(endYear, 10) - parseInt(startYear, 10),
+          rank2Year2MeanIncome["Top 20%"][startYear],
+          rank2Year2MeanIncome["Top 20%"][endYear]);
+        var middle40yearlyGrowthRate = calculateYearlyGrowthRate(
+          parseInt(endYear, 10) - parseInt(startYear, 10),
+          rank2Year2MeanIncome["Middle 40%"][startYear],
+          rank2Year2MeanIncome["Middle 40%"][endYear]);
+        var bottom40yearlyGrowthRate = calculateYearlyGrowthRate(
+          parseInt(endYear, 10) - parseInt(startYear, 10),
+          rank2Year2MeanIncome["Bottom 40%"][startYear],
+          rank2Year2MeanIncome["Bottom 40%"][endYear]);
+
+        var chartData = [
+          ["Year", "Top 20% - Middle 40%", "Top 20% - Bottom 40%"]
+        ];
+        var latestTop20MeanIncome = rank2Year2MeanIncome["Top 20%"][latestYear];
+        var latestMiddle40MeanIncome = rank2Year2MeanIncome["Middle 40%"][latestYear];
+        var latestBottom40MeanIncome = rank2Year2MeanIncome["Bottom 40%"][latestYear];
+        var latestYearInt = parseInt(latestYear, 10);
+        var futureStartYear = parseInt(latestYear, 10) + 1;
+
+        _.each(_.range(1, 100), function(i) {
+          var year = latestYearInt + i;
+          var power = i + 1;
+
+          var top20MeanIncome = latestTop20MeanIncome * Math.pow(top20YearlyGrowthRate, power);
+          var middle40MeanIncome = latestMiddle40MeanIncome * Math.pow(middle40yearlyGrowthRate, power);
+          var bottom40MeanIncome = latestBottom40MeanIncome * Math.pow(bottom40yearlyGrowthRate, power);
+
+          chartData.push([
+            year,
+            top20MeanIncome - middle40MeanIncome,
+            top20MeanIncome - bottom40MeanIncome
+          ]);
+        });
+
+        chartData = google.visualization.arrayToDataTable(chartData);
+
+        var chart = getChartWithId("futureGrowthChart", function(element) {
+          return new google.visualization.LineChart(element);
+        })
+
+        var chartOptions = {
+          title: "Mean gross income difference (Overall)"
+        };
+        chart.draw(chartData, chartOptions);
+      }
+
+      function Map(createInitialValue) {
+        this.get = function(key) {
+          var existingValue = this[key];
+
+          if (existingValue === undefined) {
+            existingValue = createInitialValue();
+            this[key] = existingValue;
+          }
+
+          return existingValue;
+        }
+
+        Object.defineProperties(this, {
+          "get": {
+            enumerable: false
+          }
+        });
+      }
+
+      function calculateYearlyGrowthRate(yearCount, initialValue, finalValue) {
+        var result = finalValue/initialValue;
+        result = Math.log10(result);
+        result = result/yearCount;
+        result = Math.pow(10, result);
+
+        return result;
+      }
+    </script>
+  </head>
+  <body>
+  </body>
+</html>
