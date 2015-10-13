@@ -40,6 +40,10 @@
       });
       var years = Object.keys(year2Rank2Category2MeanIncome).slice().sort();
       var latestYear = _.max(years);
+      var rank2Year2MeanIncome = category2Rank2Year2MeanIncome["Overall"];
+      var latestTop20MeanIncome = rank2Year2MeanIncome["Top 20%"][latestYear];
+      var latestMiddle40MeanIncome = rank2Year2MeanIncome["Middle 40%"][latestYear];
+      var latestBottom40MeanIncome = rank2Year2MeanIncome["Bottom 40%"][latestYear];
 
       var id2Chart = {};
       var getChartWithId = function(id, createChartWithElement) {
@@ -65,7 +69,6 @@
       }
 
       function drawLineChart() {
-        var rank2Year2MeanIncome = category2Rank2Year2MeanIncome["Overall"];
         var startYear = "1979";
         var endYear = "2014";
 
@@ -85,11 +88,7 @@
         var chartData = [
           ["Year", "Top 20% - Middle 40%", "Top 20% - Bottom 40%"]
         ];
-        var latestTop20MeanIncome = rank2Year2MeanIncome["Top 20%"][latestYear];
-        var latestMiddle40MeanIncome = rank2Year2MeanIncome["Middle 40%"][latestYear];
-        var latestBottom40MeanIncome = rank2Year2MeanIncome["Bottom 40%"][latestYear];
         var latestYearInt = parseInt(latestYear, 10);
-        var futureStartYear = parseInt(latestYear, 10) + 1;
 
         _.each(_.range(1, 100), function(i) {
           var year = latestYearInt + i;
