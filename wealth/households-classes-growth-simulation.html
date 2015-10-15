@@ -80,28 +80,48 @@
       function redrawCharts(startIndex, endIndex) {
         var startYear = years[startIndex];
         var endYear = years[endIndex];
+
+        var top20YearlyGrowthRate = calculateYearlyGrowthRate(
+          parseInt(endYear, 10) - parseInt(startYear, 10),
+          rank2Year2MeanIncome["Top 20%"][startYear],
+          rank2Year2MeanIncome["Top 20%"][endYear]);
+        var middle40YearlyGrowthRate = calculateYearlyGrowthRate(
+          parseInt(endYear, 10) - parseInt(startYear, 10),
+          rank2Year2MeanIncome["Middle 40%"][startYear],
+          rank2Year2MeanIncome["Middle 40%"][endYear]);
+        var bottom40YearlyGrowthRate = calculateYearlyGrowthRate(
+          parseInt(endYear, 10) - parseInt(startYear, 10),
+          rank2Year2MeanIncome["Bottom 40%"][startYear],
+          rank2Year2MeanIncome["Bottom 40%"][endYear]);
+
         displayGrowthRateYearRange(startYear, endYear);
-        drawLineChart(startYear, endYear);
+        displayTop20GrowthRate(top20YearlyGrowthRate);
+        displayMiddle40GrowthRate(middle40YearlyGrowthRate);
+        displayBottom40GrowthRate(bottom40YearlyGrowthRate);
+        drawLineChart(top20YearlyGrowthRate, middle40YearlyGrowthRate, bottom40YearlyGrowthRate);
       }
 
       function displayGrowthRateYearRange(startYear, endYear) {
         $("#yearRange").val(startYear + " - " + endYear);
       }
 
-      function drawLineChart(startYear, endYear) {
-        var top20YearlyGrowthRate = calculateYearlyGrowthRate(
-          parseInt(endYear, 10) - parseInt(startYear, 10),
-          rank2Year2MeanIncome["Top 20%"][startYear],
-          rank2Year2MeanIncome["Top 20%"][endYear]);
-        var middle40yearlyGrowthRate = calculateYearlyGrowthRate(
-          parseInt(endYear, 10) - parseInt(startYear, 10),
-          rank2Year2MeanIncome["Middle 40%"][startYear],
-          rank2Year2MeanIncome["Middle 40%"][endYear]);
-        var bottom40yearlyGrowthRate = calculateYearlyGrowthRate(
-          parseInt(endYear, 10) - parseInt(startYear, 10),
-          rank2Year2MeanIncome["Bottom 40%"][startYear],
-          rank2Year2MeanIncome["Bottom 40%"][endYear]);
+      function growthRateAsPercentage(growthRate) {
+        return ((growthRate - 1) * 100) + "%";
+      }
 
+      function displayTop20GrowthRate(growthRate) {
+        $("#top20GrowthRate").val(growthRateAsPercentage(growthRate));
+      }
+
+      function displayMiddle40GrowthRate(growthRate) {
+        $("#middle40GrowthRate").val(growthRateAsPercentage(growthRate));
+      }
+
+      function displayBottom40GrowthRate(growthRate) {
+        $("#bottom40GrowthRate").val(growthRateAsPercentage(growthRate));
+      }
+
+      function drawLineChart(top20YearlyGrowthRate, middle40YearlyGrowthRate, bottom40YearlyGrowthRate) {
         var chartData = [
           ["Year", "Top 20% - Middle 40%", "Top 20% - Bottom 40%"]
         ];
@@ -112,8 +132,8 @@
           var power = i + 1;
 
           var top20MeanIncome = latestTop20MeanIncome * Math.pow(top20YearlyGrowthRate, power);
-          var middle40MeanIncome = latestMiddle40MeanIncome * Math.pow(middle40yearlyGrowthRate, power);
-          var bottom40MeanIncome = latestBottom40MeanIncome * Math.pow(bottom40yearlyGrowthRate, power);
+          var middle40MeanIncome = latestMiddle40MeanIncome * Math.pow(middle40YearlyGrowthRate, power);
+          var bottom40MeanIncome = latestBottom40MeanIncome * Math.pow(bottom40YearlyGrowthRate, power);
 
           chartData.push([
             year,
@@ -164,6 +184,10 @@
     </script>
   </head>
   <body>
-    Growth rate calculated from: <input type="text" id="yearRange" readonly style="border: 0"></input><div id="yearRangeSlider"></div>
+    Growth rate calculated from: <input type="text" id="yearRange" readonly style="border: 0"></input><br/>
+    Top 20%: <input type="text" id="top20GrowthRate" readonly style="border: 0"><br/>
+    Middle 40%: <input type="text" id="bottom40GrowthRate" readonly style="border: 0"><br/>
+    Bottom 40%: <input type="text" id="middle40GrowthRate" readonly style="border: 0">
+    <div id="yearRangeSlider"></div>
   </body>
 </html>
