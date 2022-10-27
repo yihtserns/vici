@@ -59,7 +59,7 @@
         var optionsArea = $("#options");
         _.each(Object.keys(winningPartySet), function(party) {
           var id = "show" + party;
-          optionsArea.append("<input type='checkbox' id='" + id + "' style='margin-left: 20px;' checked>" + party + "</input>");
+          optionsArea.append("<label><input type='checkbox' id='" + id + "' style='margin-left: 20px;' checked>" + party + "</input></label>");
 
           $("#" + id).change(function() {
             if ($(this).is(":checked")) {
