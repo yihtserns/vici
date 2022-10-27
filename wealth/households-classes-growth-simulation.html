@@ -58,7 +58,7 @@
         return chart;
       }
 
-      $(document).ready(function() {
+      google.setOnLoadCallback(function() {
         var yearRangeSlider = $("#yearRangeSlider");
         var minIndex = 0;
         var maxIndex = years.length - 1;

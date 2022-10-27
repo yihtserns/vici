@@ -27,7 +27,7 @@
         drawPieChart();
       };
 
-      $(document).ready(redrawCharts);
+      google.setOnLoadCallback(redrawCharts);
       $(window).resize(redrawCharts);
 
       function drawBarChart() {

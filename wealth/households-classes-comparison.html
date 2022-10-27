@@ -53,7 +53,7 @@
         return chart;
       }
 
-      $(document).ready(function() {
+      google.setOnLoadCallback(function() {
         $("#adjustForInflation").change(redrawCharts);
         $(window).resize(redrawCharts);
 

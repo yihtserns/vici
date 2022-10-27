@@ -14,7 +14,7 @@
         async: false
       }).responseText);
 
-      $(document).ready(function() {
+      google.setOnLoadCallback(function() {
         var categoryOption = $("#category");
 
         var redrawChart = function() {
