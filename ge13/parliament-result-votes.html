@@ -28,7 +28,7 @@
       });
       var unregisteredVoterCount = MALAYSIAN_POPULATION - totalRegisteredVoters;
 
-      $(document).ready(function() {
+      google.setOnLoadCallback(function() {
         var showPrOption = $("#showPr");
         var showForfeittedVotesOption = $("#showForfeittedVotes");
         var showUnregisteredVotersOption = $("#showUnregisteredVoters");

@@ -44,7 +44,7 @@
 
       var includePartySet = _.clone(winningPartySet);
       var includeStateNames = allStateNames;
-      $(document).ready(function() {
+      google.setOnLoadCallback(function() {
         var statesFilterArea = $("#statesFilter");
         _.each(states, function(state) {
           statesFilterArea.append("<option>" + state.name + "</option>");
